@@ -94,12 +94,26 @@ sql = <<-SQL
   SELECT *
   FROM students
   WHERE students.grade = 10
-  limit 1
+
 SQL
 
-DB[:conn].execute(sql).map do |row|
+array = DB[:conn].execute(sql).map do |row|
   self.new_from_db(row)
 end
+array[0]
+end
+
+def self.all_students_in_grade_X(x)
+sql = <<-SQL
+  SELECT *
+  FROM students
+  WHERE students.grade = ?
+SQL
+
+DB[:conn].execute(sql,x).map do |row|
+  self.new_from_db(row)
+end
+
 end
 
 
